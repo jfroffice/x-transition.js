@@ -1,0 +1,32 @@
+{
+  "name": "x-transition.js",
+  "version": "0.1.0",
+  "homepage": "https://github.com/jfroffice/x-transition.js",
+  "description": "HTML attribute to add and remove CSS classes when transitionend",
+  "authors": [
+    "jfroffice <me@jfroffice.me>"
+  ],
+  "main": "dist/x-transition.js",
+  "moduleType": [
+    "globals"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "components",
+    "test",
+    "tests"
+  ],
+  "keywords": [
+    "component",
+    "transition",
+    "transitionend",
+    "animation",
+    "animationend",
+    "addclass",
+    "css",
+    "reveal"
+  ]
+}
