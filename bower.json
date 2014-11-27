@@ -28,5 +28,8 @@
     "addclass",
     "css",
     "reveal"
-  ]
+  ],
+  "devDependencies": {
+    "animate.css": "~3.2.0"
+  }
 }

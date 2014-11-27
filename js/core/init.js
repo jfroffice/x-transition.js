@@ -2,7 +2,7 @@ var am = am || {};
 am.transition = (function(undefined) {
 
 	var FROM = 'entering',
-		TO = 'entered';
+		TO = 'pulse';
 
 	return function() {
 
