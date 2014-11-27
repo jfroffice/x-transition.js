@@ -40,9 +40,7 @@
     "js": [
       "js/libs/events.js",
       "js/core/prefix.js",
-      "js/core/viewport.js",
-      "js/am/sequencer.js",
-      "js/am/facade.js"
+      "js/core/init.js"
     ]
   }
 }
