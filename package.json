@@ -1,7 +1,7 @@
 {
   "name": "x-transition.js",
   "version": "0.1.0",
-  "description": "HTML attribute to add dynamic CSS modifier on classes",
+  "description": "HTML attribute to add dynamic CSS classes when transition end",
   "main": "gulpfile.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
