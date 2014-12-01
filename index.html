@@ -5,15 +5,10 @@
 	<title>x-transition.js</title>
 	<link rel="stylesheet" href="css/styles.css">
 	<link rel="stylesheet" href="./bower_components/animate.css/animate.css">
-	<script src="./bower_components/x-enterleave.js/dist/x-enterleave.min.js"></script>
-	<script src="js/libs/events.js"></script>
-	<script src="js/core/prefix.js"></script>
-	<script src="js/core/init.js"></script>
-	</head>
+</head>
 <body>
 	<div class="container">
 		<div class="section">
-			<div x-enterleave x-transition="tada animated" class="box"></div>
 			<div x-enterleave x-transition="pulse animated" class="box box--c1"></div>
 			<div x-enterleave x-transition="flash animated" class="box box--c2"></div>
 			<div x-enterleave x-transition="bounce animated" class="box box--c3"></div>
@@ -53,7 +48,10 @@
 			<a class="github" href="https://github.com/jfroffice/x-transition.js"><img src="./img/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
 		</div>
 	</div>
+	<script src="./bower_components/x-enterleave.js/dist/x-enterleave.js"></script>
+	<script src="js/libs/events.js"></script>
+	<script src="js/core/prefix.js"></script>
+	<script src="js/core/init.js"></script>
 	<script>am.transition();</script>
-	<script>am.start();</script>
 </body>
 </html>
