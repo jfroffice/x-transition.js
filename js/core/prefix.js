@@ -2,18 +2,13 @@ var am = am || {};
 am.prefix = (function() {
 	"use strict";
 
-	/*var ANIMATION_END_EVENTS = {
-			'WebkitAnimation': 'webkitAnimationEnd',
-			'OAnimation': 'oAnimationEnd',
-			'msAnimation': 'MSAnimationEnd',
-			'animation': 'animationend'
-		},*/
 	var	TRANSITION_END_EVENTS = {
 			'WebkitTransition': 'webkitTransitionEnd',
 			'OTransition': 'oTransitionEnd',
 			'msTransition': 'MSTransitionEnd',
 			'transition': 'transitionend'
-		};
+		},
+		transitionPrefix;
 
 	function getPrefix(name) {
 		var b = document.body || document.documentElement,
@@ -21,20 +16,22 @@ am.prefix = (function() {
 			v = ['Moz', 'Webkit', 'Khtml', 'O', 'ms'],
 			p = name;
 
-		if(typeof s[p] == 'string')
+		if(typeof s[p] === 'string')
 			return name;
 
 		p = p.charAt(0).toUpperCase() + p.substr(1);
 		for( var i=0; i<v.length; i++ ) {
-			if(typeof s[v[i] + p] == 'string')
-				return v[i] + p;
+			var key = v[i] + p;
+			if(typeof s[key] == 'string')
+				return key;
 		}
 		return false;
 	}
 
+	transitionPrefix = getPrefix('transition');
+
 	return {
-		TRANSITION_END_EVENT: TRANSITION_END_EVENTS[getPrefix('transition')],
-	/*	ANIMATION_END_EVENT: ANIMATION_END_EVENTS[getPrefix('animation')]*/
+		TRANSITION_END_EVENT: TRANSITION_END_EVENTS[transitionPrefix]
 	};
 
 })();
