@@ -1,6 +1,6 @@
 /**
  * x-transition.js - HTML attribute to add dynamic CSS classes when transition end
- * @version v0.1.0
+ * @version v0.1.1
  * @link https://github.com/jfroffice/x-transition.js
  * @license MIT
  */
@@ -81,18 +81,13 @@ var am = am || {};
 am.prefix = (function() {
 	"use strict";
 
-	/*var ANIMATION_END_EVENTS = {
-			'WebkitAnimation': 'webkitAnimationEnd',
-			'OAnimation': 'oAnimationEnd',
-			'msAnimation': 'MSAnimationEnd',
-			'animation': 'animationend'
-		},*/
 	var	TRANSITION_END_EVENTS = {
 			'WebkitTransition': 'webkitTransitionEnd',
 			'OTransition': 'oTransitionEnd',
 			'msTransition': 'MSTransitionEnd',
 			'transition': 'transitionend'
-		};
+		},
+		transitionPrefix;
 
 	function getPrefix(name) {
 		var b = document.body || document.documentElement,
@@ -100,62 +95,74 @@ am.prefix = (function() {
 			v = ['Moz', 'Webkit', 'Khtml', 'O', 'ms'],
 			p = name;
 
-		if(typeof s[p] == 'string')
+		if(typeof s[p] === 'string')
 			return name;
 
 		p = p.charAt(0).toUpperCase() + p.substr(1);
 		for( var i=0; i<v.length; i++ ) {
-			if(typeof s[v[i] + p] == 'string')
-				return v[i] + p;
+			var key = v[i] + p;
+			if(typeof s[key] == 'string')
+				return key;
 		}
 		return false;
 	}
 
+	transitionPrefix = getPrefix('transition');
+
 	return {
-		TRANSITION_END_EVENT: TRANSITION_END_EVENTS[getPrefix('transition')],
-	/*	ANIMATION_END_EVENT: ANIMATION_END_EVENTS[getPrefix('animation')]*/
+		TRANSITION_END_EVENT: TRANSITION_END_EVENTS[transitionPrefix]
 	};
 
 })();
+
 var am = am || {};
 am.transition = (function(undefined) {
 
-	var ATTR = 'x-transition';
+	var ATTR = 'x-transition',
+		transitions = [];
 
-	return function() {
+	[].forEach.call(document.querySelectorAll('html'), function(element) {
 
-		[].forEach.call(document.querySelectorAll('[' + ATTR + ']'), function(element) {
+	    var observer = new MutationObserver(function(mutations) {
+	        mutations.forEach(function(mutation) {
 
-			var cssToAdd = [];
+	            if (mutation.addedNodes.length || mutation.removedNodes.length) {
+	                var elements = document.querySelectorAll('[' + ATTR + ']');
+	               if (elements.length !== transitions.length) {
 
-			[].forEach.call(element.attributes, function(attribute) {
-				if (attribute.name.indexOf(ATTR) !== -1) {
-					cssToAdd = attribute.value.split(' ');
-				}
-			});
+	               		//console.log('initialize x-transition ' + elements.length + ' ' + transitions.length);
 
-			if (!cssToAdd.length) {
-				return;
-			}
+	               		[].forEach.call(elements, function(element) {
 
-			var observer = new MutationObserver(function(mutations) {
-				mutations.forEach(function(mutation) {
-					var elm = mutation.target;
+	               			var cssToAdd = [];
 
-					events.one(elm, am.prefix.TRANSITION_END_EVENT, function() {
-						cssToAdd.forEach(function(to) {
-							elm.classList.add(to);
-						});
-					});
-				});
-			});
+	               			[].forEach.call(element.attributes, function(attribute) {
+	               				if (attribute.name.indexOf(ATTR) !== -1) {
+	               					cssToAdd = attribute.value.split(' ');
+	               				}
+	               			});
 
-			observer.observe(element, {
-				attributes: true,
-				childList: true,
-				characterData: true
-			});
-		});
-	};
+	               			events.one(element, am.prefix.TRANSITION_END_EVENT, function() {
+	               				cssToAdd.forEach(function(to) {
+	               					element.classList.add(to);
+	               				});
+	               			});
+
+	               			transitions.push(element);
+	               		});
+
+	                	//console.log(elements.length);
+	                }
+	            }
+	        });
+	    });
+
+	    observer.observe(element, {
+	        attributes: true,
+	        childList: true,
+	        characterData: true,
+	        subtree: true
+	    });
+	});
 
 })();

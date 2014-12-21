@@ -1,6 +1,6 @@
 {
   "name": "x-transition.js",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "homepage": "https://github.com/jfroffice/x-transition.js",
   "description": "HTML attribute to add and remove CSS classes when transitionend",
   "authors": [

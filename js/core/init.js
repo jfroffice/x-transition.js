@@ -1,42 +1,51 @@
 var am = am || {};
 am.transition = (function(undefined) {
 
-	var ATTR = 'x-transition';
+	var ATTR = 'x-transition',
+		transitions = [];
 
-	return function() {
+	[].forEach.call(document.querySelectorAll('html'), function(element) {
 
-		[].forEach.call(document.querySelectorAll('[' + ATTR + ']'), function(element) {
+	    var observer = new MutationObserver(function(mutations) {
+	        mutations.forEach(function(mutation) {
 
-			var cssToAdd = [];
+	            if (mutation.addedNodes.length || mutation.removedNodes.length) {
+	                var elements = document.querySelectorAll('[' + ATTR + ']');
+	               if (elements.length !== transitions.length) {
 
-			[].forEach.call(element.attributes, function(attribute) {
-				if (attribute.name.indexOf(ATTR) !== -1) {
-					cssToAdd = attribute.value.split(' ');
-				}
-			});
+	               		//console.log('initialize x-transition ' + elements.length + ' ' + transitions.length);
 
-			if (!cssToAdd.length) {
-				return;
-			}
+	               		[].forEach.call(elements, function(element) {
 
-			var observer = new MutationObserver(function(mutations) {
-				mutations.forEach(function(mutation) {
-					var elm = mutation.target;
+	               			var cssToAdd = [];
 
-					events.one(elm, am.prefix.TRANSITION_END_EVENT, function() {
-						cssToAdd.forEach(function(to) {
-							elm.classList.add(to);
-						});
-					});
-				});
-			});
+	               			[].forEach.call(element.attributes, function(attribute) {
+	               				if (attribute.name.indexOf(ATTR) !== -1) {
+	               					cssToAdd = attribute.value.split(' ');
+	               				}
+	               			});
 
-			observer.observe(element, {
-				attributes: true,
-				childList: true,
-				characterData: true
-			});
-		});
-	};
+	               			events.one(element, am.prefix.TRANSITION_END_EVENT, function() {
+	               				cssToAdd.forEach(function(to) {
+	               					element.classList.add(to);
+	               				});
+	               			});
+
+	               			transitions.push(element);
+	               		});
+
+	                	//console.log(elements.length);
+	                }
+	            }
+	        });
+	    });
+
+	    observer.observe(element, {
+	        attributes: true,
+	        childList: true,
+	        characterData: true,
+	        subtree: true
+	    });
+	});
 
 })();
